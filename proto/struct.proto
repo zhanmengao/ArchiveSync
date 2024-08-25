@@ -1,0 +1,15 @@
+syntax = "proto3";
+package pb;
+
+message TextItem{
+    string Text = 1;
+    int64 Time = 2; //生成时间
+    string Device = 3;//设备号
+}
+
+message Packet{
+    int32 Cmd = 1;//接口名
+    string UID = 2;
+    string Device = 3;
+    bytes Body = 10;
+}

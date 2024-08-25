@@ -1,0 +1,7 @@
+version: v1
+plugins:
+  - name: gogofast
+    out: ../server/pb
+    opt: paths=source_relative
+  - name: cpp
+    out: ../client/pb
