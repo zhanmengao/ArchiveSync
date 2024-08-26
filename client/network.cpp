@@ -57,6 +57,7 @@ void NetworkManager::onRecvied(const QByteArray &message){
     //反序列化
     pb::Packet packet;
     packet.ParseFromArray(message.constData(),message.length());
+    //根据cmd进行反序列化
 }
 void NetworkManager::onError(QAbstractSocket::SocketError err){
 
