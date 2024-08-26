@@ -3,6 +3,10 @@
 #include<stdio.h>
 #include"logmanager.h"
 #include<QLineEdit>
+#include<stdlib.h>
+#include"struct.pb.h"
+#include"packet.h"
+#include<QByteArray>
 
 NetworkManager::NetworkManager(QWidget* parent):QWidget(parent),gateConn(nullptr){
 
@@ -29,6 +33,18 @@ void NetworkManager::ConnectServer(const QString& token){
     lock.unlock();
     gateConn->open(addr);
 }
+void NetworkManager::SendPacket(int cmd,Marshal* data){
+    pb::Packet packet;
+    packet.set_cmd(cmd);
+    std::string body = data->SerializeAsString();
+    packet.set_allocated_body(&body);
+    packet.SerializeAsString();
+    //发出去
+    packet.set_ackid(AckID);
+    packet.set_sendid(SendID);
+    packet.set_seqid(SeqID);
+    gateConn->sendBinaryMessage(QByteArray(packet.SerializePartialAsString().c_str()));
+}
 
 void NetworkManager::onConnect(){
     Infof("建立连接 %1",gateConn->origin());
@@ -38,6 +54,9 @@ void NetworkManager::onDisConnect(){
 }
 void NetworkManager::onRecvied(const QByteArray &message){
     Debugf("收到数据 len(%1)",message.length());
+    //反序列化
+    pb::Packet packet;
+    packet.ParseFromArray(message.constData(),message.length());
 }
 void NetworkManager::onError(QAbstractSocket::SocketError err){
 

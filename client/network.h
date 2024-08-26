@@ -5,8 +5,10 @@
 #include<string>
 #include<QtWebSockets/QtWebSockets>
 #include<QWidget>
+#include<QMap>
 
 #include<QMutex>
+#include"packet.h"
 
 const QString AppID = "";
 const QString AppSecret = "";
@@ -17,6 +19,7 @@ public:
     NetworkManager(QWidget* parent);
     static NetworkManager* Ins();
     void ConnectServer(const QString& token);
+    void SendPacket(int cmd,Marshal* data);
     void onConnect();
     void onDisConnect();
     void onRecvied(const QByteArray &message);
@@ -25,6 +28,10 @@ private:
     static NetworkManager* _ins;
     QWebSocket* gateConn;
     QMutex lock;
+    int SeqID;
+    int SendID;
+    int AckID;
+    QMap<int,packet> cmdMap;
 };
 
 #endif // NETWORK_H

@@ -4,17 +4,18 @@ import (
 	"context"
 	"net/http"
 	"server/pb"
+	"server/pkg/global"
 )
 
 type TUrlHandler interface {
 	HandleInit(ctx context.Context, request *http.Request, writer http.ResponseWriter) (responseHeader http.Header, err error)
-	HandlePacket(ctx context.Context, conn IConnect, rcv []byte)
-	HandleClose(ctx context.Context, conn IConnect, err error)
+	HandlePacket(ctx context.Context, conn global.IConnect, rcv []byte)
+	HandleClose(ctx context.Context, conn global.IConnect, err error)
 }
 
-type THandlerPacket func(ctx context.Context, conn IConnect, rcv []byte)
+type THandlerPacket func(ctx context.Context, conn global.IConnect, rcv []byte)
 
-func (f THandlerPacket) HandPacket(ctx context.Context, conn IConnect, body []byte) {
+func (f THandlerPacket) HandPacket(ctx context.Context, conn global.IConnect, body []byte) {
 	f(ctx, conn, body)
 }
 

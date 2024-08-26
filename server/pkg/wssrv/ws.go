@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/gorilla/websocket"
 	"net/http"
-	"server/pkg/types"
+	"server/pkg/global"
 	"server/pkg/wssrv/internal/wsv2"
 	"server/pkg/xlog"
 	"sync"
@@ -103,7 +103,7 @@ func (s *WsServer) HandleClient(ctx context.Context, writer http.ResponseWriter,
 	return
 }
 
-func (s *WsServer) HandleWebSocket(ctx context.Context, writer http.ResponseWriter, request *http.Request, responseHeader http.Header) (conn types.IConnect, err error) {
+func (s *WsServer) HandleWebSocket(ctx context.Context, writer http.ResponseWriter, request *http.Request, responseHeader http.Header) (conn global.IConnect, err error) {
 	//建立连接
 	wsConn, err := s.wsUpgrade.Upgrade(writer, request, responseHeader)
 	if err != nil {
@@ -114,7 +114,7 @@ func (s *WsServer) HandleWebSocket(ctx context.Context, writer http.ResponseWrit
 	return
 }
 
-func (s *WsServer) processWebSocket(ctx context.Context, conn types.IConnect, h TUrlHandler) {
+func (s *WsServer) processWebSocket(ctx context.Context, conn global.IConnect, h TUrlHandler) {
 	var err error
 	defer func() {
 		h.HandleClose(ctx, conn, err)

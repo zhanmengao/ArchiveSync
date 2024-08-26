@@ -5,9 +5,9 @@ import (
 	ws "github.com/gorilla/websocket"
 	"net"
 	"net/http"
+	"server/pkg/global"
 	"server/pkg/queue"
 	"server/pkg/queue/qtyp"
-	"server/pkg/types"
 	"sync"
 	"time"
 )
@@ -51,7 +51,7 @@ func (c *Conn) GetFirstBody() []byte {
 }
 
 // Run 只可调用一次
-func (c *Conn) Run(ctx context.Context, handler types.IHandler) (err error) {
+func (c *Conn) Run(ctx context.Context, handler global.IHandler) (err error) {
 	defer func() {
 		close(c.closedCh)
 	}()

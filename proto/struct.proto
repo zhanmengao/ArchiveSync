@@ -11,5 +11,8 @@ message Packet{
     int32 Cmd = 1;//接口名
     string UID = 2;
     string Device = 3;
+    int64 SeqID = 4;
+    int64 SendID = 5;
+    int64 AckID = 6;
     bytes Body = 10;
 }

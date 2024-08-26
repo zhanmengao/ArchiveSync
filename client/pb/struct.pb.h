@@ -364,6 +364,9 @@ class Packet final :
     kUIDFieldNumber = 2,
     kDeviceFieldNumber = 3,
     kBodyFieldNumber = 10,
+    kSeqIDFieldNumber = 4,
+    kSendIDFieldNumber = 5,
+    kAckIDFieldNumber = 6,
     kCmdFieldNumber = 1,
   };
   // string UID = 2 [json_name = "UID"];
@@ -408,6 +411,33 @@ class Packet final :
   std::string* _internal_mutable_body();
   public:
 
+  // int64 SeqID = 4 [json_name = "SeqID"];
+  void clear_seqid();
+  int64_t seqid() const;
+  void set_seqid(int64_t value);
+  private:
+  int64_t _internal_seqid() const;
+  void _internal_set_seqid(int64_t value);
+  public:
+
+  // int64 SendID = 5 [json_name = "SendID"];
+  void clear_sendid();
+  int64_t sendid() const;
+  void set_sendid(int64_t value);
+  private:
+  int64_t _internal_sendid() const;
+  void _internal_set_sendid(int64_t value);
+  public:
+
+  // int64 AckID = 6 [json_name = "AckID"];
+  void clear_ackid();
+  int64_t ackid() const;
+  void set_ackid(int64_t value);
+  private:
+  int64_t _internal_ackid() const;
+  void _internal_set_ackid(int64_t value);
+  public:
+
   // int32 Cmd = 1 [json_name = "Cmd"];
   void clear_cmd();
   int32_t cmd() const;
@@ -428,6 +458,9 @@ class Packet final :
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr uid_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr device_;
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr body_;
+    int64_t seqid_;
+    int64_t sendid_;
+    int64_t ackid_;
     int32_t cmd_;
     mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   };
@@ -687,6 +720,66 @@ inline void Packet::set_allocated_device(std::string* device) {
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:pb.Packet.Device)
+}
+
+// int64 SeqID = 4 [json_name = "SeqID"];
+inline void Packet::clear_seqid() {
+  _impl_.seqid_ = int64_t{0};
+}
+inline int64_t Packet::_internal_seqid() const {
+  return _impl_.seqid_;
+}
+inline int64_t Packet::seqid() const {
+  // @@protoc_insertion_point(field_get:pb.Packet.SeqID)
+  return _internal_seqid();
+}
+inline void Packet::_internal_set_seqid(int64_t value) {
+  
+  _impl_.seqid_ = value;
+}
+inline void Packet::set_seqid(int64_t value) {
+  _internal_set_seqid(value);
+  // @@protoc_insertion_point(field_set:pb.Packet.SeqID)
+}
+
+// int64 SendID = 5 [json_name = "SendID"];
+inline void Packet::clear_sendid() {
+  _impl_.sendid_ = int64_t{0};
+}
+inline int64_t Packet::_internal_sendid() const {
+  return _impl_.sendid_;
+}
+inline int64_t Packet::sendid() const {
+  // @@protoc_insertion_point(field_get:pb.Packet.SendID)
+  return _internal_sendid();
+}
+inline void Packet::_internal_set_sendid(int64_t value) {
+  
+  _impl_.sendid_ = value;
+}
+inline void Packet::set_sendid(int64_t value) {
+  _internal_set_sendid(value);
+  // @@protoc_insertion_point(field_set:pb.Packet.SendID)
+}
+
+// int64 AckID = 6 [json_name = "AckID"];
+inline void Packet::clear_ackid() {
+  _impl_.ackid_ = int64_t{0};
+}
+inline int64_t Packet::_internal_ackid() const {
+  return _impl_.ackid_;
+}
+inline int64_t Packet::ackid() const {
+  // @@protoc_insertion_point(field_get:pb.Packet.AckID)
+  return _internal_ackid();
+}
+inline void Packet::_internal_set_ackid(int64_t value) {
+  
+  _impl_.ackid_ = value;
+}
+inline void Packet::set_ackid(int64_t value) {
+  _internal_set_ackid(value);
+  // @@protoc_insertion_point(field_set:pb.Packet.AckID)
 }
 
 // bytes Body = 10 [json_name = "Body"];

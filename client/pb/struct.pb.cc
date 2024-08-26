@@ -41,6 +41,9 @@ PROTOBUF_CONSTEXPR Packet::Packet(
     /*decltype(_impl_.uid_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.device_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
   , /*decltype(_impl_.body_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.seqid_)*/int64_t{0}
+  , /*decltype(_impl_.sendid_)*/int64_t{0}
+  , /*decltype(_impl_.ackid_)*/int64_t{0}
   , /*decltype(_impl_.cmd_)*/0
   , /*decltype(_impl_._cached_size_)*/{}} {}
 struct PacketDefaultTypeInternal {
@@ -76,6 +79,9 @@ const uint32_t TableStruct_struct_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(p
   PROTOBUF_FIELD_OFFSET(::pb::Packet, _impl_.cmd_),
   PROTOBUF_FIELD_OFFSET(::pb::Packet, _impl_.uid_),
   PROTOBUF_FIELD_OFFSET(::pb::Packet, _impl_.device_),
+  PROTOBUF_FIELD_OFFSET(::pb::Packet, _impl_.seqid_),
+  PROTOBUF_FIELD_OFFSET(::pb::Packet, _impl_.sendid_),
+  PROTOBUF_FIELD_OFFSET(::pb::Packet, _impl_.ackid_),
   PROTOBUF_FIELD_OFFSET(::pb::Packet, _impl_.body_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -91,13 +97,15 @@ static const ::_pb::Message* const file_default_instances[] = {
 const char descriptor_table_protodef_struct_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\014struct.proto\022\002pb\"J\n\010TextItem\022\022\n\004Text\030\001"
   " \001(\tR\004Text\022\022\n\004Time\030\002 \001(\003R\004Time\022\026\n\006Device"
-  "\030\003 \001(\tR\006Device\"X\n\006Packet\022\020\n\003Cmd\030\001 \001(\005R\003C"
-  "md\022\020\n\003UID\030\002 \001(\tR\003UID\022\026\n\006Device\030\003 \001(\tR\006De"
-  "vice\022\022\n\004Body\030\n \001(\014R\004Bodyb\006proto3"
+  "\030\003 \001(\tR\006Device\"\234\001\n\006Packet\022\020\n\003Cmd\030\001 \001(\005R\003"
+  "Cmd\022\020\n\003UID\030\002 \001(\tR\003UID\022\026\n\006Device\030\003 \001(\tR\006D"
+  "evice\022\024\n\005SeqID\030\004 \001(\003R\005SeqID\022\026\n\006SendID\030\005 "
+  "\001(\003R\006SendID\022\024\n\005AckID\030\006 \001(\003R\005AckID\022\022\n\004Bod"
+  "y\030\n \001(\014R\004Bodyb\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_struct_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_struct_2eproto = {
-    false, false, 192, descriptor_table_protodef_struct_2eproto,
+    false, false, 261, descriptor_table_protodef_struct_2eproto,
     "struct.proto",
     &descriptor_table_struct_2eproto_once, nullptr, 0, 2,
     schemas, file_default_instances, TableStruct_struct_2eproto::offsets,
@@ -411,6 +419,9 @@ Packet::Packet(const Packet& from)
       decltype(_impl_.uid_){}
     , decltype(_impl_.device_){}
     , decltype(_impl_.body_){}
+    , decltype(_impl_.seqid_){}
+    , decltype(_impl_.sendid_){}
+    , decltype(_impl_.ackid_){}
     , decltype(_impl_.cmd_){}
     , /*decltype(_impl_._cached_size_)*/{}};
 
@@ -439,7 +450,9 @@ Packet::Packet(const Packet& from)
     _this->_impl_.body_.Set(from._internal_body(), 
       _this->GetArenaForAllocation());
   }
-  _this->_impl_.cmd_ = from._impl_.cmd_;
+  ::memcpy(&_impl_.seqid_, &from._impl_.seqid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.cmd_) -
+    reinterpret_cast<char*>(&_impl_.seqid_)) + sizeof(_impl_.cmd_));
   // @@protoc_insertion_point(copy_constructor:pb.Packet)
 }
 
@@ -451,6 +464,9 @@ inline void Packet::SharedCtor(
       decltype(_impl_.uid_){}
     , decltype(_impl_.device_){}
     , decltype(_impl_.body_){}
+    , decltype(_impl_.seqid_){int64_t{0}}
+    , decltype(_impl_.sendid_){int64_t{0}}
+    , decltype(_impl_.ackid_){int64_t{0}}
     , decltype(_impl_.cmd_){0}
     , /*decltype(_impl_._cached_size_)*/{}
   };
@@ -497,7 +513,9 @@ void Packet::Clear() {
   _impl_.uid_.ClearToEmpty();
   _impl_.device_.ClearToEmpty();
   _impl_.body_.ClearToEmpty();
-  _impl_.cmd_ = 0;
+  ::memset(&_impl_.seqid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.cmd_) -
+      reinterpret_cast<char*>(&_impl_.seqid_)) + sizeof(_impl_.cmd_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -532,6 +550,30 @@ const char* Packet::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "pb.Packet.Device"));
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 SeqID = 4 [json_name = "SeqID"];
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
+          _impl_.seqid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 SendID = 5 [json_name = "SendID"];
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
+          _impl_.sendid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // int64 AckID = 6 [json_name = "AckID"];
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 48)) {
+          _impl_.ackid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -599,6 +641,24 @@ uint8_t* Packet::_InternalSerialize(
         3, this->_internal_device(), target);
   }
 
+  // int64 SeqID = 4 [json_name = "SeqID"];
+  if (this->_internal_seqid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(4, this->_internal_seqid(), target);
+  }
+
+  // int64 SendID = 5 [json_name = "SendID"];
+  if (this->_internal_sendid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(5, this->_internal_sendid(), target);
+  }
+
+  // int64 AckID = 6 [json_name = "AckID"];
+  if (this->_internal_ackid() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteInt64ToArray(6, this->_internal_ackid(), target);
+  }
+
   // bytes Body = 10 [json_name = "Body"];
   if (!this->_internal_body().empty()) {
     target = stream->WriteBytesMaybeAliased(
@@ -642,6 +702,21 @@ size_t Packet::ByteSizeLong() const {
         this->_internal_body());
   }
 
+  // int64 SeqID = 4 [json_name = "SeqID"];
+  if (this->_internal_seqid() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_seqid());
+  }
+
+  // int64 SendID = 5 [json_name = "SendID"];
+  if (this->_internal_sendid() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_sendid());
+  }
+
+  // int64 AckID = 6 [json_name = "AckID"];
+  if (this->_internal_ackid() != 0) {
+    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_ackid());
+  }
+
   // int32 Cmd = 1 [json_name = "Cmd"];
   if (this->_internal_cmd() != 0) {
     total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_cmd());
@@ -673,6 +748,15 @@ void Packet::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBU
   }
   if (!from._internal_body().empty()) {
     _this->_internal_set_body(from._internal_body());
+  }
+  if (from._internal_seqid() != 0) {
+    _this->_internal_set_seqid(from._internal_seqid());
+  }
+  if (from._internal_sendid() != 0) {
+    _this->_internal_set_sendid(from._internal_sendid());
+  }
+  if (from._internal_ackid() != 0) {
+    _this->_internal_set_ackid(from._internal_ackid());
   }
   if (from._internal_cmd() != 0) {
     _this->_internal_set_cmd(from._internal_cmd());
@@ -708,7 +792,12 @@ void Packet::InternalSwap(Packet* other) {
       &_impl_.body_, lhs_arena,
       &other->_impl_.body_, rhs_arena
   );
-  swap(_impl_.cmd_, other->_impl_.cmd_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(Packet, _impl_.cmd_)
+      + sizeof(Packet::_impl_.cmd_)
+      - PROTOBUF_FIELD_OFFSET(Packet, _impl_.seqid_)>(
+          reinterpret_cast<char*>(&_impl_.seqid_),
+          reinterpret_cast<char*>(&other->_impl_.seqid_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Packet::GetMetadata() const {

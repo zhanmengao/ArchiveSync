@@ -4,7 +4,7 @@ import (
 	"context"
 	ws "github.com/gorilla/websocket"
 	"net/http"
-	"server/pb"
+	"server/pkg/global"
 	"server/pkg/wssrv/internal/wsv2"
 	"time"
 )
@@ -12,8 +12,13 @@ import (
 type Client struct {
 	UID        string
 	sessionKey string
-	conn       IConnect
+	conn       global.IConnect
 	handler    IHandler
+}
+
+func (c *Client) HandPacket(ctx context.Context, conn global.IConnect, body []byte) {
+	//TODO implement me
+	panic("implement me")
 }
 
 func NewWsClient(ctx context.Context, request *http.Request, conn *ws.Conn, readTimeout time.Duration, handler IHandler) *Client {
@@ -22,26 +27,6 @@ func NewWsClient(ctx context.Context, request *http.Request, conn *ws.Conn, read
 		conn:    wsv2.NewWSConn(ctx, request, conn, readTimeout),
 	}
 	return cli
-}
-
-func (c *Client) HandleInit(ctx context.Context, cli *Client, sessionKey string) (uid, deviceToken string, err error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (c *Client) HandleEncode(ctx context.Context, cli *Client, pkt *pb.Packet) (snd []byte, err error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (c *Client) HandleDecode(ctx context.Context, cli *Client, rcv []byte) (pkt *pb.Packet, isSendToSrv bool, err error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (c *Client) HandleClose(ctx context.Context, cli *Client, err error) {
-	//TODO implement me
-	panic("implement me")
 }
 
 func (c *Client) Run(ctx context.Context) (err error) {
